@@ -20,7 +20,7 @@ class Logger {
 
   // Log as error
   static error(string) {
-    console.log((prefixes.error + " " + string).red);
+    console.log((prefixes.error.brightRed + " " + string));
   }
 
   static info(string) {

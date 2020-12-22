@@ -11,18 +11,20 @@
  * Create a package.json for your project by running 'npm init' in your project folder.
  * And then install the dependencies with 'npm install --save glob discord.js'
  */
-// Declare globals
+
+// Declare globals (use wisely)
 appRoot = __dirname;
+Logger = require('./src/modules/Logger').Logger;  // This basically makes Logger a singleton
+
 
 // Require the dependencies
 require('dotenv').config();
-const { Client, Collection } = require('discord.js');
+const { Client, Collection, Constants } = require('discord.js');
 const path = require('path');
 const glob = require('glob');
 
 
 // Require local modules
-const { Logger } = require('./src/modules/Logger');
 const { ConfigManager } = require("./src/modules/ConfigManager");
 const helpers = require("./src/helpers.js");
 
@@ -108,10 +110,39 @@ client.on('ready', () => {
         // Make sure command is defined.
         if (!command) return;
 
-        // Issue the command or print an error
+
+        let iterationCount = 0;  // Exit condition to avoid infinite loop
+
+        // Check if a subcommand has been issued
+        while (true) {
+          if (command.subcommands && args) {
+
+            // Look for the subcommand
+            const match = command.subcommands.find(sub => sub.name === args[0]);
+
+            if (match) {
+              command = match;
+              args.shift();   // Remove the first arg
+
+            // If the subcommand can't be found, break
+            } else break;
+
+          // If the command doesn't have subs, break
+          } else break;
+
+          // Avoid infinite loops
+          iterationCount++;
+          if (iterationCount > 1000) {
+            Logger.error("While loop break at 1000 iterations.");
+          }
+        }
+
+        // Check if the user has permission to issue the command and run it
         if (helpers.checkPermissions(message.member, command.permissions)) {
           command.execute(client, message, args);
-          Logger.info(`User ${message.author.username} ran command ${command.name} with args: ${args}`);
+          Logger.info(`User ${message.author.username} ran command ${command.name} with ${args.length > 0 ? "args: "+args : "no args"}`);
+
+        // Else print an error
         } else {
           message.reply(ConfigManager.getConfig().messages.invalidPermission);
           Logger.info(`User ${message.author.username} tried to run command ${command.name} but didn't have permission.`);
@@ -122,5 +153,9 @@ client.on('ready', () => {
         console.error(err);
     }
 });
+
 // Login
-client.login(token);
+client.login(token)
+.catch(e => e.code === 'TOKEN_INVALID' ?
+            Logger.error("An invalid token has been provided. Make sure you added a .env file and wrote the right token in it. The format should be TOKEN=<token>") :
+            console.error(e.code));

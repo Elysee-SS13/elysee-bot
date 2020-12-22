@@ -1,9 +1,9 @@
 {
-    "prefix": "/",
-
-    "availableRole": "",
-
-    "messages": {
-      "invalidPermission": "Tu n'as pas la permission d'utiliser cette commande"
-    }
+  "prefix": "/",
+  "roleDispo": "790537155273031722",
+  "channelDispo": "790324888191107103",
+  "nbJoueurs": 1,
+  "messages": {
+    "invalidPermission": "Tu n'as pas la permission d'utiliser cette commande"
+  }
 }
