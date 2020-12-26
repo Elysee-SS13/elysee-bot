@@ -43,7 +43,8 @@ client.permissions = new Collection();
 
 
 // Function that will load all commands from the given directory.
-function loadCommands(cmdDir) {
+// Optional message parameter to answer to a message when loading is finished
+module.exports.loadCommands = function(cmdDir, message=null) {
     // Create an empty array that will store all the file paths for the commands,
     // and push all files to the array.
     const items = [];
@@ -57,6 +58,10 @@ function loadCommands(cmdDir) {
 
         // Store the command and aliases (if it has any) in their Collection.
         const command = require(item);
+
+        // ignore flag to avoid indexing the command
+        if (command.ignore) continue;
+
         client.commands.set(command.name, command);
         if (command.aliases) {
             for (const alias of command.aliases) {
@@ -64,16 +69,20 @@ function loadCommands(cmdDir) {
             }
         }
 
-        if (command.permissions && command.permissions.length > 0) {
+        if (command.permissions && command.permissions.size > 0) {
           for (const perm of command.permissions) {
             client.permissions.set(perm, command.name);
           }
         }
     }
     Logger.success("Commands loaded successfully");
+
+    // Answer if message is given
+    if (message) message.reply("Reload terminé !");
 }
+
 // Run function and pass the relative path to the 'commands' folder.
-loadCommands('./src/commands');
+module.exports.loadCommands('./src/commands');
 
 
 // Client ready event

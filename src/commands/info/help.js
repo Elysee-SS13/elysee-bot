@@ -44,7 +44,7 @@ module.exports = {
         var find = client.commands.find(c => c.name === args[0]);
         var fullCmd = `${Conf.getConfig().prefix + find.name}`;
         if (find) {
-          args.shift;
+          args.shift();
 
           // Check for subcommands
           while(args.length) {
@@ -65,10 +65,16 @@ module.exports = {
             } else break;
           }
 
+          const desc = `
+          Commande : \`${fullCmd}\` \n
+          ${find.description || "Pas de description"} \n
+          Utilisation : \`${fullCmd} ${find.usage || find.subcommands.map(cmd => cmd.name).join("|") || "Pas de paramètres"}\`
+          `;
+
           const embed = new MessageEmbed()
           .setTitle(`Aide : ${fullCmd} `)
           .setColor('BLUE')
-          .setDescription(`Commande : \`${fullCmd}\` \n ${find.description || "Pas de description"} \n Utilisation : ${find.usage || "Pas de paramètres"}`)
+          .setDescription(desc)
           message.channel.send({ embed })
 
           .catch(e => Logger.error(e));

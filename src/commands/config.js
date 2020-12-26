@@ -8,6 +8,7 @@ module.exports = {
 
     execute(client, message, args) {
       return message.reply("WIP");
+      
       // Manage subcommands
       if (args.length < 0) {
         message.reply("Invalid arguments. Valid actions are `view [key]`, `edit <key> <new_value>`");
