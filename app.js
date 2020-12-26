@@ -14,7 +14,8 @@
 
 // Declare globals (use wisely)
 appRoot = __dirname;
-Logger = require('./src/modules/Logger').Logger;  // This basically makes Logger a singleton
+Logger = require('./src/classes/Logger').Logger;  // This basically makes Logger a singleton
+ErrorHandler = require('./src/classes/ErrorHandler').ErrorHandler;
 
 
 // Require the dependencies
@@ -25,7 +26,7 @@ const glob = require('glob');
 
 
 // Require local modules
-const { ConfigManager } = require("./src/modules/ConfigManager");
+const { ConfigManager } = require("./src/classes/ConfigManager");
 const helpers = require("./src/helpers.js");
 
 

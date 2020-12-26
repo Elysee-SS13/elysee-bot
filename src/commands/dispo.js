@@ -3,7 +3,7 @@ const {
 } = require("discord.js");
 const {
   ConfigManager
-} = require(appRoot + '/src/modules/ConfigManager');
+} = require(appRoot + '/src/classes/ConfigManager');
 const helpers = require(appRoot + '/src/helpers.js');
 
 

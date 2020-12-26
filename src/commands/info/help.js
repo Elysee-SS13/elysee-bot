@@ -2,7 +2,7 @@
 // Permissions list can be found here https://discord.js.org/#/docs/main/stable/class/Permissions?scrollTo=s-FLAGS
 
 const { MessageEmbed } = require('discord.js');
-const Conf = require(appRoot + "/src/modules/ConfigManager").ConfigManager;
+const Conf = require(appRoot + "/src/classes/ConfigManager").ConfigManager;
 const helpers = require(appRoot + '/src/helpers.js');
 
 

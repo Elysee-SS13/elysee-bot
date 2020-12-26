@@ -34,5 +34,12 @@ module.exports = {
   // Removes diacritics from string and lowercase it, for use in comparison
   sanitizeString(string) {
     return string.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+  },
+
+
+
+  clamp(num, min, max) {
+    return num <= min ? min : num >= max ? max : num;
   }
+
 }
